@@ -1,0 +1,51 @@
+---
+title: "CodeBook"
+author: "Dan Houghton"
+date: "14/10/2018"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("run_analysis.R")
+```
+
+## Source Data
+
+This data was collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available [at the source website](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones), but in summary:
+
+> The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. 
+
+See [`data-raw/UCI HAR Dataset/features.txt`](data-raw/UCI HAR Dataset/features.txt) for more details of the measurements.
+
+Each record of the source data consists of:
+
+- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration.
+- Triaxial Angular velocity from the gyroscope. 
+- A 561-feature vector with time and frequency domain variables. 
+- Its activity label: `WALKING`, `WALKING_UPSTAIRS`, `WALKING_DOWNSTAIRS`, `SITTING`, `STANDING`, or `LAYING`
+- An identifier of the subject who carried out the experiment.
+
+These are split across several files.
+
+## Transformations
+
+I made the follow transformations:
+
+1. Merged the training and the test sets to create one data set.
+2. Selected only the variables (features) relating to the mean and standard deviation of the underlying measurements.
+3. Added the activity and subject variables.
+4. Ensured the variable names were R-friendly.
+5. Create a second, independent tidy data set [`results.txt`](results.txt) with the average of each variable per activity, per subject.
+
+## Variables
+
+The averaged variables per `<activity, subject>` pair are:
+
+```{r}
+select(var_avg, -activity, -subject) %>% names()
+```
+
+For detailed definitions, please refer to [`data-raw/UCI HAR Dataset/features_info.txt`](data-raw/UCI HAR Dataset/features_info.txt).
